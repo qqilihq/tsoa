@@ -76,6 +76,7 @@ export class RouteGenerator {
             const normalisedFullPath = normalisePath(`${normalisedBasePath}${normalisedControllerPath}${normalisedMethodPath}`, '/', '', false);
 
             return {
+              contentType: method.produces && method.produces.length === 1 ? method.produces[0] : '',
               fullPath: normalisedFullPath,
               method: method.method.toLowerCase(),
               name: method.name,
@@ -83,7 +84,6 @@ export class RouteGenerator {
               path: normalisedMethodPath,
               security: method.security,
               successStatus: this.options.useSuccessResponseCode && method.successStatus ? method.successStatus : 'undefined',
-              contentType: method.produces && method.produces.length === 1 ? method.produces[0] : '',
             };
           }),
           modulePath: this.getRelativeImportPath(controller.location),

@@ -937,7 +937,7 @@ describe('Metadata generation', () => {
       }
 
       expect(method.method).to.equal('get');
-      expect(method.path).to.equal('/normalGetMethod');
+      expect(method.path).to.equal('normalGetMethod');
       expect(method.produces).to.be.undefined;
     });
 
@@ -948,7 +948,7 @@ describe('Metadata generation', () => {
       }
 
       expect(method.method).to.equal('get');
-      expect(method.path).to.equal('/producesTextHtmlContent');
+      expect(method.path).to.equal('producesTextHtmlContent');
 
       expect(method.produces).to.have.members(['text/html; charset=utf-8']);
     });
