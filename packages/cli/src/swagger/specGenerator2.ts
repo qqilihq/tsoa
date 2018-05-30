@@ -215,7 +215,7 @@ export class SpecGenerator2 extends SpecGenerator {
 
     return {
       operationId: this.getOperationId(method.name),
-      produces: ['application/json'],
+      produces: method.produces && method.produces.length ? method.produces : ['application/json'],
       responses: swaggerResponses,
     };
   }

@@ -62,6 +62,7 @@ export class MethodGenerator {
       operationId: this.getOperationId(),
       parameters,
       path: this.path,
+      produces: this.getProduces(),
       responses,
       successStatus: successStatus,
       security: this.getSecurity(),
@@ -268,6 +269,26 @@ export class MethodGenerator {
     }
 
     return securityDecorators.map(d => getSecurites(d, this.current.typeChecker));
+  }
+
+  private getProduces() {
+    const producesDecorators = getDecorators(this.node, (identifier) => identifier.text === 'Produces');
+
+    if (!producesDecorators || !producesDecorators.length) {
+      return undefined;
+    }
+    if (producesDecorators.length > 1) {
+      throw new GenerateMetadataError(`Only one Produces decorator allowed in '${this.getCurrentLocation}' method.`);
+    }
+
+    const decorator = producesDecorators[0];
+    const expression = decorator.parent as ts.CallExpression;
+
+    if (expression.arguments.length > 0 && (expression.arguments[0] as any).text) {
+      return [(expression.arguments[0] as any).text];
+    }
+
+    return undefined;
   }
 
   private getIsHidden() {

@@ -78,6 +78,9 @@ export abstract class SpecGenerator {
       return this.getSwaggerTypeForIntersectionType(type);
     } else if (type.dataType === 'nestedObjectLiteral') {
       return this.getSwaggerTypeForObjectLiteral(type);
+    } else if (type.dataType === 'file') {
+      // TODO rebase: properly handle this
+      // return { type: 'file' } as Swagger.Schema;
     } else {
       return assertNever(type);
     }

@@ -29,6 +29,7 @@ export namespace Tsoa {
     summary?: string;
     isHidden: boolean;
     operationId?: string;
+    produces?: string[];
   }
 
   export interface Parameter {
@@ -107,7 +108,8 @@ export namespace Tsoa {
     | 'refAlias'
     | 'nestedObjectLiteral'
     | 'union'
-    | 'intersection';
+    | 'intersection'
+    | 'file';
 
   export type RefTypeLiteral = 'refObject' | 'refEnum' | 'refAlias';
 

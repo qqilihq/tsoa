@@ -83,6 +83,7 @@ export class RouteGenerator {
               path: normalisedMethodPath,
               security: method.security,
               successStatus: this.options.useSuccessResponseCode && method.successStatus ? method.successStatus : 'undefined',
+              contentType: method.produces && method.produces.length === 1 ? method.produces[0] : '',
             };
           }),
           modulePath: this.getRelativeImportPath(controller.location),

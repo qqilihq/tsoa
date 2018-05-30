@@ -1,7 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse } from '@tsoa/runtime';
+import { Readable } from 'stream';
+import { Controller, FileResult, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse } from '@tsoa/runtime';
 {{#each controllers}}
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { {{name}} } from '{{modulePath}}';
@@ -85,6 +86,11 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.{{name}}.apply(controller, validatedArgs as any);
+            {{#if contentType}}
+            if (controller instanceof Controller) {
+              controller.setHeader('Content-Type', '{{contentType}}');
+            }
+            {{/if}}            
             promiseHandler(controller, promise, response, {{successStatus}}, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -175,7 +181,16 @@ export function RegisterRoutes(app: express.Router) {
         if (data && typeof data.pipe === 'function' && data.readable && typeof data._read === 'function') {
             data.pipe(response);
         } else if (data !== null && data !== undefined) {
-            response.status(statusCode || 200).json(data);
+            if (data instanceof FileResult) {
+                if (data.data instanceof Readable) {
+                    response.status(statusCode | 200);
+                    data.data.pipe(response);
+                } else {
+                    response.status(statusCode | 200).send(data.data);
+                }
+            } else {
+                response.status(statusCode | 200).json(data);
+            }            
         } else {
             response.status(statusCode || 204).end();
         }

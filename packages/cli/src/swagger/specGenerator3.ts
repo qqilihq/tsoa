@@ -286,6 +286,7 @@ export class SpecGenerator3 extends SpecGenerator {
         description: res.description,
       };
 
+      // TODO rebase: still need to properly handle `produces` property
       if (res.schema && !isVoidType(res.schema)) {
         swaggerResponses[res.name].content = {
           'application/json': {

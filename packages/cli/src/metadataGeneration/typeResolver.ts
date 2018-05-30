@@ -336,6 +336,10 @@ export class TypeResolver {
         return stringMetaType;
       }
 
+      if (typeReference.typeName.text === 'FileResult') {
+        return { dataType: 'file' } as Tsoa.Type;
+      }
+
       if (this.context[typeReference.typeName.text]) {
         return new TypeResolver(this.context[typeReference.typeName.text], this.current, this.parentNode, this.context).resolve();
       }
